@@ -3,7 +3,8 @@
     <div class="col">
       <div class="row">
         <div class="col">
-                <button class="btn btn-primary btn-block google">
+                <button class="btn btn-primary btn-block google"
+                (click)="googleSignInViaPopup()">
                   <i class="fab fa-google"></i>
                   Google Login with Popup
                 </button>
@@ -21,7 +22,8 @@
                 </button>
         </div>
         <div class="col">
-                <button class="btn btn-primary btn-block google">
+                <button class="btn btn-primary btn-block google"
+                (click)="googleSignInViaRedirect()">
                   <i class="fab fa-google"></i>
                   Google Login with Redirect
                 </button>
