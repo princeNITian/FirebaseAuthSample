@@ -9,6 +9,8 @@ import { auth } from 'firebase';
 })
 export class AppComponent implements OnInit {
   title = 'FirebaseAuthSample';
+  email: string ;
+  password: string;
   constructor(public afAuth: AngularFireAuth) {}
 
   ngOnInit() {
@@ -66,5 +68,9 @@ signInAnonymously() {
 logout(){
   this.afAuth.auth.signOut();
 }
-
+// sign in with email and password
+signUp(){
+  this.afAuth.auth.createUserWithEmailAndPassword(this.email,this.password)
+  .then((userCredentials) => console.log(userCredentials));
+}
 }
