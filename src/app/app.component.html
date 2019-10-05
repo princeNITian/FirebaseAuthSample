@@ -52,9 +52,9 @@
         </div>
         <hr>
         <div class="row">
-          <button class="btn btn-primary btn-block email">
+          <button class="btn btn-primary btn-block email" (click)="toggleSignInMode()">
             <i class="far fa-envelope"></i>
-            Login with Email/Password
+            {{ signInMode ? 'Sign In ':'Sign Up '}} with Email/Password
           </button>
           <button class="btn btn-primary btn-block phone">
             <i class="fas fa-phone"></i>
@@ -75,7 +75,7 @@
           <label for="password">Password</label>
           <input name="password" type="text" class="form-control" [(ngModel)]="password">
         </div>
-        <button class="btn btn-primary btn-block" (click)="signUp()">Sign Up</button>
+        <button class="btn btn-primary btn-block" (click)="signInOrSignUp()">{{ signInMode ? 'Sign Up' : 'Sign In'}}</button>
       </div>
     </div>
   </ng-template>

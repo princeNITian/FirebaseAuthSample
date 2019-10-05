@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   title = 'FirebaseAuthSample';
   email: string ;
   password: string;
+  signInMode = false;
   constructor(public afAuth: AngularFireAuth) {}
 
   ngOnInit() {
@@ -68,9 +69,23 @@ signInAnonymously() {
 logout(){
   this.afAuth.auth.signOut();
 }
-// sign in with email and password
+// sign up with email and password
 signUp(){
   this.afAuth.auth.createUserWithEmailAndPassword(this.email,this.password)
   .then((userCredentials) => console.log(userCredentials));
 }
+// sign in method using email and password
+signIn() {
+  this.afAuth.auth.signInWithEmailAndPassword(this.email,this.password)
+  .then((userCredentials) => console.log(userCredentials));
+}
+// toggle b/w sign in and sign up..
+signInOrSignUp() {
+  this.signInMode ? this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
+  : this.afAuth.auth.signInWithEmailAndPassword(this.email, this.password);
+}
+toggleSignInMode() {
+  this.signInMode = !this.signInMode;
+}
+
 }
