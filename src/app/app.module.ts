@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppFirebaseModule } from './app-firebase/app-firebase.module';
 import { FormsModule } from '@angular/forms';
+import { WindowService } from './common/window/window.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     AppFirebaseModule
   ],
-  providers: [],
+  providers: [WindowService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

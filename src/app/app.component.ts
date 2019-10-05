@@ -1,22 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { auth } from 'firebase';
+import { WindowService } from './common/window/window.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'FirebaseAuthSample';
   email: string ;
   password: string;
+  phoneNumber: string;
   signInMode = false;
-  constructor(public afAuth: AngularFireAuth) {}
+  phoneSignIn = true;
+  otp: string;
+  disableOTPButton = true;
+  windowRef: any;
+  constructor(
+    public afAuth: AngularFireAuth,
+    private windowService: WindowService
+    ) {}
+
 
   ngOnInit() {
-    this.afAuth.authState
-    .subscribe((user) => console.log(user));
+    // this.afAuth.authState
+    // .subscribe((user) => console.log(user));
+    this.windowRef = this.windowService.windowRef;
+  }
+  ngAfterViewInit(){
+    this.windowRef.recaptchaVerifier = new auth.RecaptchaVerifier('recaptcha-container', {
+      size: 'normal',
+      callback: (response) => {
+        // TODO
+        this.disableOTPButton = false;
+      }
+    });
+    this.windowRef.recaptchaVerifier.render();
   }
 // google signin via popup returns promises
   googleSignInViaPopup() {
@@ -71,7 +92,7 @@ logout(){
 }
 // sign up with email and password
 signUp(){
-  this.afAuth.auth.createUserWithEmailAndPassword(this.email,this.password)
+  this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
   .then((userCredentials) => console.log(userCredentials));
 }
 // sign in method using email and password
@@ -87,5 +108,21 @@ signInOrSignUp() {
 toggleSignInMode() {
   this.signInMode = !this.signInMode;
 }
+togglePhoneSignIn() {
+  this.phoneSignIn = !this.phoneSignIn;
+}
+
+sendOTP() {
+  this.afAuth.auth.signInWithPhoneNumber(this.phoneNumber, this.windowRef.recaptchaVerifier)
+  .then((confirmationResult) => {
+    this.windowRef.confirmationResult = confirmationResult;
+  });
+}
+verifyOTP(){
+  this.windowRef.confirmationResult.confirm(this.otp)
+  .then((userCredentials) => console.log(userCredentials));
+}
+
+
 
 }

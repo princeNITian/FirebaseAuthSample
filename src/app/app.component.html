@@ -10,7 +10,7 @@
     </div>
   </div>
   <ng-template #login>
-    <div class="row">
+    <div class="row" *ngIf="!phoneSignIn; else phone">
       <div class="col">
         <div class="row">
           <div class="col">
@@ -56,7 +56,7 @@
             <i class="far fa-envelope"></i>
             {{ signInMode ? 'Sign In ':'Sign Up '}} with Email/Password
           </button>
-          <button class="btn btn-primary btn-block phone">
+          <button class="btn btn-primary btn-block phone" (click)="togglePhoneSignIn()">
             <i class="fas fa-phone"></i>
             Login with Phone
           </button>
@@ -78,5 +78,19 @@
         <button class="btn btn-primary btn-block" (click)="signInOrSignUp()">{{ signInMode ? 'Sign Up' : 'Sign In'}}</button>
       </div>
     </div>
+    <ng-template #phone>
+      <div class="form-group">
+       <label for="phoneNumber">Phone Number</label>
+       <input type="text" name="phoneNumber" [(ngModel)]="phoneNumber" class="form-control"></div>
+        <div id="recaptcha-container"></div>
+       <button class="btn btn-primary btn-block" [disabled]="disableOTPButton" (click)="sendOTP()">Send OTP</button>
+        <hr>
+        <div class="form-group">
+          <label for="otp">OTP</label>
+          <input type="text" name="otp" [(ngModel)]="otp" class="form-control">
+        </div>
+        <button class="btn btn-primary btn-block" (click)="verifyOTP()">Verify OTP</button>
+        <button class="btn btn-primary btn-block" (click)="togglePhoneSignIn()">Cancel</button>
+    </ng-template>
   </ng-template>
 </div>
