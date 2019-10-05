@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase';
 import { WindowService } from './common/window/window.service';
 import { AuthService } from './common/auth/auth.service';
 import { environment } from 'src/environments/environment';
@@ -10,21 +9,17 @@ import { environment } from 'src/environments/environment';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   title = 'FirebaseAuthSample';
   email: string ;
   password: string;
-  phoneNumber: string;
   signInMode = false;
-  phoneSignIn = true;
-  otp: string;
   disableOTPButton = true;
   windowRef: any;
-  provider = environment.providers;
-  modes = environment.modes;
+
   constructor(
     public afAuth: AngularFireAuth,
-    private authService: AuthService,
+    public authService: AuthService,
     private windowService: WindowService
     ) {}
 
@@ -34,16 +29,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // .subscribe((user) => console.log(user));
     this.windowRef = this.windowService.windowRef;
   }
-  ngAfterViewInit() {
-    this.windowRef.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-      size: 'normal',
-      callback: (response) => {
-        // TODO
-        this.disableOTPButton = false;
-      }
-    });
-    this.windowRef.recaptchaVerifier.render();
-  }
+
 // // google signin via popup returns promises
 //   googleSignInViaPopup() {
 //     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
@@ -87,13 +73,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 //   .then((userCredentials) => console.log(userCredentials));
 // }
 // sign in anonymously
-signInAnonymously() {
-  this.authService.signInAnonymously();
-}
-// logout
-logout() {
-  this.authService.logout();
-}
+
+
 // // sign up with email and password
 // signUp(){
 //   this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
@@ -105,30 +86,11 @@ logout() {
 //   .then((userCredentials) => console.log(userCredentials));
 // }
 // toggle b/w sign in and sign up..
-signInOrSignUp() {
-  this.authService.signInOrSignUp(this.email, this.password, this.signInMode);
-}
-toggleSignInMode() {
-  this.signInMode = !this.signInMode;
-}
-togglePhoneSignIn() {
-  this.phoneSignIn = !this.phoneSignIn;
-}
 
-sendOTP() {
-  this.afAuth.auth.signInWithPhoneNumber(this.phoneNumber, this.windowRef.recaptchaVerifier)
-  .then((confirmationResult) => {
-    this.windowRef.confirmationResult = confirmationResult;
-  });
-}
-verifyOTP(){
-  this.windowRef.confirmationResult.confirm(this.otp)
-  .then((userCredentials) => console.log(userCredentials));
-}
 
-signInWithModeAndProvider(mode: string, provider: string) {
-  this.authService.signIn(mode,provider);
-}
+
+
+
 
 
 }

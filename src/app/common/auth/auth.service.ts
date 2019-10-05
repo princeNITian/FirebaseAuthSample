@@ -8,6 +8,9 @@ import { auth } from 'firebase';
 })
 export class AuthService {
 
+  signInMode = false;
+  phoneSignIn = false;
+
   constructor(private afAuth: AngularFireAuth) { }
 
   private getProviderInstance(provider: string) {
@@ -39,8 +42,8 @@ export class AuthService {
   }
 
   // toggle b/w sign in and sign up..
-  signInOrSignUp(email,password,signInMode) {
-    signInMode ? this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+  signInOrSignUp(email, password) {
+    this.signInMode ? this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       : this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
   signInAnonymously() {
