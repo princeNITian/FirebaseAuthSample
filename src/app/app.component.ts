@@ -9,11 +9,11 @@ import { auth } from 'firebase';
 })
 export class AppComponent implements OnInit {
   title = 'FirebaseAuthSample';
-  constructor(private afAuth: AngularFireAuth) {}
+  constructor(public afAuth: AngularFireAuth) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.afAuth.authState
-    .subscribe((user)=>console.log(user));
+    .subscribe((user) => console.log(user));
   }
 // google signin via popup returns promises
   googleSignInViaPopup() {
@@ -57,4 +57,14 @@ githubSignInViaRedirect() {
   this.afAuth.auth.signInWithRedirect(new auth.GithubAuthProvider())
   .then((userCredentials) => console.log(userCredentials));
 }
+// sign in anonymously
+signInAnonymously() {
+  this.afAuth.auth.signInAnonymously()
+  .then((userCredentials) => console.log(userCredentials));
+}
+// logout
+logout(){
+  this.afAuth.auth.signOut();
+}
+
 }
