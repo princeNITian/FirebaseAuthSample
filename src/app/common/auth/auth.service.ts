@@ -38,4 +38,15 @@ export class AuthService {
     : this.afAuth.auth.signInWithRedirect(this.getProviderInstance(provider));
   }
 
+  // toggle b/w sign in and sign up..
+  signInOrSignUp(email,password,signInMode) {
+    signInMode ? this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      : this.afAuth.auth.signInWithEmailAndPassword(email, password);
+  }
+  signInAnonymously() {
+    this.afAuth.auth.signInAnonymously();
+  }
+  logout() {
+    this.afAuth.auth.signOut();
+  }
 }

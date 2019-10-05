@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { auth } from 'firebase';
+import * as firebase from 'firebase';
 import { WindowService } from './common/window/window.service';
 import { AuthService } from './common/auth/auth.service';
 import { environment } from 'src/environments/environment';
@@ -34,8 +34,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     // .subscribe((user) => console.log(user));
     this.windowRef = this.windowService.windowRef;
   }
-  ngAfterViewInit(){
-    this.windowRef.recaptchaVerifier = new auth.RecaptchaVerifier('recaptcha-container', {
+  ngAfterViewInit() {
+    this.windowRef.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
       size: 'normal',
       callback: (response) => {
         // TODO
@@ -88,27 +88,25 @@ export class AppComponent implements OnInit, AfterViewInit {
 // }
 // sign in anonymously
 signInAnonymously() {
-  this.afAuth.auth.signInAnonymously()
-  .then((userCredentials) => console.log(userCredentials));
+  this.authService.signInAnonymously();
 }
 // logout
-logout(){
-  this.afAuth.auth.signOut();
+logout() {
+  this.authService.logout();
 }
-// sign up with email and password
-signUp(){
-  this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
-  .then((userCredentials) => console.log(userCredentials));
-}
-// sign in method using email and password
-signIn() {
-  this.afAuth.auth.signInWithEmailAndPassword(this.email,this.password)
-  .then((userCredentials) => console.log(userCredentials));
-}
+// // sign up with email and password
+// signUp(){
+//   this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
+//   .then((userCredentials) => console.log(userCredentials));
+// }
+// // sign in method using email and password
+// signIn() {
+//   this.afAuth.auth.signInWithEmailAndPassword(this.email,this.password)
+//   .then((userCredentials) => console.log(userCredentials));
+// }
 // toggle b/w sign in and sign up..
 signInOrSignUp() {
-  this.signInMode ? this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
-  : this.afAuth.auth.signInWithEmailAndPassword(this.email, this.password);
+  this.authService.signInOrSignUp(this.email, this.password, this.signInMode);
 }
 toggleSignInMode() {
   this.signInMode = !this.signInMode;
