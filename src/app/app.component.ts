@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { auth } from 'firebase';
 import { WindowService } from './common/window/window.service';
+import { AuthService } from './common/auth/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +20,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   otp: string;
   disableOTPButton = true;
   windowRef: any;
+  provider = environment.providers;
+  modes = environment.modes;
   constructor(
     public afAuth: AngularFireAuth,
+    private authService: AuthService,
     private windowService: WindowService
     ) {}
 
@@ -39,48 +44,48 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
     this.windowRef.recaptchaVerifier.render();
   }
-// google signin via popup returns promises
-  googleSignInViaPopup() {
-    this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
-    .then((userCredentials) => console.log(userCredentials));
-  }
-// google signin via redirect returns void promises we need to use ngOnInit()
-  googleSignInViaRedirect(){
-    this.afAuth.auth.signInWithRedirect(new auth.GoogleAuthProvider())
-    .then((userCredentials) => console.log(userCredentials));
-  }
-// facebook signin via popup
-  facebookSignInViaPopup() {
-    this.afAuth.auth.signInWithPopup(new auth.FacebookAuthProvider())
-      .then((userCredentials) => console.log(userCredentials));
-  }
-// facebook signin via redirect
-  facebookSignInViaRedirect() {
-    this.afAuth.auth.signInWithRedirect(new auth.FacebookAuthProvider())
-    .then((userCredentials) => console.log(userCredentials));
-  }
+// // google signin via popup returns promises
+//   googleSignInViaPopup() {
+//     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
+//     .then((userCredentials) => console.log(userCredentials));
+//   }
+// // google signin via redirect returns void promises we need to use ngOnInit()
+//   googleSignInViaRedirect(){
+//     this.afAuth.auth.signInWithRedirect(new auth.GoogleAuthProvider())
+//     .then((userCredentials) => console.log(userCredentials));
+//   }
+// // facebook signin via popup
+//   facebookSignInViaPopup() {
+//     this.afAuth.auth.signInWithPopup(new auth.FacebookAuthProvider())
+//       .then((userCredentials) => console.log(userCredentials));
+//   }
+// // facebook signin via redirect
+//   facebookSignInViaRedirect() {
+//     this.afAuth.auth.signInWithRedirect(new auth.FacebookAuthProvider())
+//     .then((userCredentials) => console.log(userCredentials));
+//   }
 
-// twitter signin via popup
- twitterSignInViaPopup() {
-   this.afAuth.auth.signInWithPopup(new auth.TwitterAuthProvider())
-   .then((userCredentials) => console.log(userCredentials));
- }
-// twitter signin via redirect
-  twitterSignInViaRedirect() {
-    this.afAuth.auth.signInWithRedirect(new auth.TwitterAuthProvider())
-      .then((userCredentials) => console.log(userCredentials));
-  }
+// // twitter signin via popup
+//  twitterSignInViaPopup() {
+//    this.afAuth.auth.signInWithPopup(new auth.TwitterAuthProvider())
+//    .then((userCredentials) => console.log(userCredentials));
+//  }
+// // twitter signin via redirect
+//   twitterSignInViaRedirect() {
+//     this.afAuth.auth.signInWithRedirect(new auth.TwitterAuthProvider())
+//       .then((userCredentials) => console.log(userCredentials));
+//   }
 
-// github signin via popup
-githubSignInViaPopup() {
-  this.afAuth.auth.signInWithPopup(new auth.GithubAuthProvider())
-  .then((userCredentials) => console.log(userCredentials));
-}
-// github signin via redirect
-githubSignInViaRedirect() {
-  this.afAuth.auth.signInWithRedirect(new auth.GithubAuthProvider())
-  .then((userCredentials) => console.log(userCredentials));
-}
+// // github signin via popup
+// githubSignInViaPopup() {
+//   this.afAuth.auth.signInWithPopup(new auth.GithubAuthProvider())
+//   .then((userCredentials) => console.log(userCredentials));
+// }
+// // github signin via redirect
+// githubSignInViaRedirect() {
+//   this.afAuth.auth.signInWithRedirect(new auth.GithubAuthProvider())
+//   .then((userCredentials) => console.log(userCredentials));
+// }
 // sign in anonymously
 signInAnonymously() {
   this.afAuth.auth.signInAnonymously()
@@ -123,6 +128,9 @@ verifyOTP(){
   .then((userCredentials) => console.log(userCredentials));
 }
 
+signInWithModeAndProvider(mode: string, provider: string) {
+  this.authService.signIn(mode,provider);
+}
 
 
 }

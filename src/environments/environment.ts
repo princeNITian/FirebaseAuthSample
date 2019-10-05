@@ -12,6 +12,16 @@ export const environment = {
     storageBucket: '',
     messagingSenderId: '830985375662',
     appId: '1:830985375662:web:b52127640f10f52a47023f'
+  },
+  modes: {
+    POPUP: 'popup',
+    REDIRECT: 'redirect'
+  },
+  providers: {
+    GOOGLE: 'google',
+    FACEBOOK: 'facebook',
+    TWITTER: 'twitter',
+    GITHUB: 'github'
   }
 };
 
